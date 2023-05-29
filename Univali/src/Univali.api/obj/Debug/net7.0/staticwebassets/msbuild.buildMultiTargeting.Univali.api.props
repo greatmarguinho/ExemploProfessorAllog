@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Univali.api.props" />
+</Project>
