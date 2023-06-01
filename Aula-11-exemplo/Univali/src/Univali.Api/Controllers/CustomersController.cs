@@ -1,4 +1,4 @@
-
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Univali.Api.Entities;
 using Univali.Api.Models;
@@ -10,10 +10,15 @@ namespace Univali.Api.Controllers;
 public class CustomersController : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IEnumerable<Customer>> GetCustomers()
+    public ActionResult<IEnumerable<CustomerDto>> GetCustomers()
     {
-        var result = Data.Instance.Customers;
-        return Ok(result);
+        var customersToReturn = Data.Instance.Customers.Select(customer => new CustomerDto
+        {
+            Id = customer.Id,
+            Name = customer.Name,
+            Cpf = customer.Cpf
+        });
+        return Ok(customersToReturn);
     }
 
     [HttpGet("{id}", Name = "GetCustomerById")]
@@ -27,7 +32,7 @@ public class CustomersController : ControllerBase
         {
             Id = customerFromDatabase.Id,
             Name = customerFromDatabase.Name,
-            Cpf = customerFromDatabase.Cpf 
+            Cpf = customerFromDatabase.Cpf
         };
         return Ok(customerToReturn);
         // return customer != null ? Ok(customer) : NotFound();
@@ -35,36 +40,96 @@ public class CustomersController : ControllerBase
 
 
     [HttpGet("cpf/{cpf}")]
-    public ActionResult<Customer> GetCustomerByCpf(string cpf)
+    public ActionResult<CustomerDto> GetCustomerByCpf(string cpf)
     {
-        Console.WriteLine($"cpf: {cpf}");
-        var customer = Data.Instance.Customers.FirstOrDefault(c => c.Cpf == cpf);
+        var customerFromDatabase = Data.Instance.Customers.FirstOrDefault(c => c.Cpf == cpf);
 
-        if(customer == null)
+        if (customerFromDatabase == null)
         {
             return NotFound();
         }
 
-        return Ok(customer);
+        CustomerDto customerToReturn = new CustomerDto
+        {
+            Id = customerFromDatabase.Id,
+            Name = customerFromDatabase.Name,
+            Cpf = customerFromDatabase.Cpf
+        };
+        return Ok(customerToReturn);
     }
 
     [HttpPost]
-    public ActionResult<Customer> CreateCustomer( Customer customer)
+    public ActionResult<CustomerDto> CreateCustomer(CustomerForCreationDto customerForCreationDto)
     {
-        var newCustomer = new Customer()
+        var customerEntity = new Customer()
         {
             Id = Data.Instance.Customers.Max(c => c.Id) + 1,
-            Name = customer.Name,
-            Cpf = customer.Cpf
+            Name = customerForCreationDto.Name,
+            Cpf = customerForCreationDto.Cpf
         };
 
-        Data.Instance.Customers.Add(newCustomer);
+        Data.Instance.Customers.Add(customerEntity);
+
+        CustomerDto customerToReturn = new CustomerDto()
+        {
+            Id = customerEntity.Id,
+            Name = customerForCreationDto.Name,
+            Cpf = customerForCreationDto.Cpf
+        };
         return CreatedAtRoute
         (
             "GetCustomerById",
-            new {id = newCustomer.Id },
-            newCustomer
+            new { id = customerToReturn.Id },
+            customerToReturn
         );
     }
 
+    [HttpPut("{id}")]
+    public ActionResult UpdateCustomer(int id, CustomerForUpdateDto customerForUpdateDto)
+    {
+        if(id != customerForUpdateDto.Id) return BadRequest();
+
+        var customerFromDatabase = Data.Instance.Customers
+        .FirstOrDefault(customerForUpdateDto => customerForUpdateDto.Id == id);
+
+        if(customerFromDatabase == null) return  NotFound();
+
+        customerFromDatabase.Name = customerForUpdateDto.Name;
+        customerFromDatabase.Cpf = customerForUpdateDto.Cpf;
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult DeleteCustomer(int id)
+    {
+        var customerFromDatabase = Data.Instance.Customers.FirstOrDefault(customer => customer.Id == id);
+        if(customerFromDatabase == null) return NotFound();
+        Data.Instance.Customers.Remove(customerFromDatabase);
+
+        return NoContent();
+    }
+
+    [HttpPatch("{id}")]
+    public ActionResult PartiallyUpdateCustomer(
+        [FromBody] JsonPatchDocument<CustomerForPatchDto> patchDocument,
+        [FromRoute] int id)
+        {
+            var customerFromDatabase = Data.Instance.Customers.FirstOrDefault(customer => customer.Id == id);
+
+            if(customerFromDatabase == null) return NotFound();
+
+            var customerToPatch = new CustomerForPatchDto
+            {
+                Name = customerFromDatabase.Name,
+                Cpf = customerFromDatabase.Cpf
+            };
+
+            patchDocument.ApplyTo(customerToPatch);
+
+            customerFromDatabase.Name = customerToPatch.Name;
+            customerFromDatabase.Cpf = customerToPatch.Cpf;
+            
+            return NoContent();
+        }
 }

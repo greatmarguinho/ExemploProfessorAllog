@@ -1,12 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "hqJHFzbR6Sqi3lEmdb58+vXdQKtscmFsheX0VoGVTYEP+ThrWZuSMTIwtfmBtznrgxkBAi2/QJV2+0hjteE5/g==",
+  "dgSpecHash": "J8VfvMQIZq5pcMHQIHw6pxm7l/fUakHh154b5jIY2kNFbxWNU0bp1MKNi5/fvQU9Ot7xGCm39TJokN/Qt1A7sw==",
   "success": true,
   "projectFilePath": "C:\\Users\\marco\\OneDrive\\Área de Trabalho\\Aula-11-exemplo\\Univali\\src\\Univali.Api\\Univali.Api.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\marco\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\7.0.4\\microsoft.aspnetcore.jsonpatch.7.0.4.nupkg.sha512",
+    "C:\\Users\\marco\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\7.0.4\\microsoft.aspnetcore.mvc.newtonsoftjson.7.0.4.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.4\\microsoft.aspnetcore.openapi.7.0.4.nupkg.sha512",
+    "C:\\Users\\marco\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",
+    "C:\\Users\\marco\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\marco\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "C:\\Users\\marco\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",

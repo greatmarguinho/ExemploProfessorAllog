@@ -64,3 +64,7 @@ C:\Users\marco\OneDrive\Área de Trabalho\Aula-11-exemplo\Univali\src\Univali.Ap
 C:\Users\marco\OneDrive\Área de Trabalho\Aula-11-exemplo\Univali\src\Univali.Api\obj\Debug\net7.0\Univali.Api.pdb
 C:\Users\marco\OneDrive\Área de Trabalho\Aula-11-exemplo\Univali\src\Univali.Api\obj\Debug\net7.0\Univali.Api.genruntimeconfig.cache
 C:\Users\marco\OneDrive\Área de Trabalho\Aula-11-exemplo\Univali\src\Univali.Api\obj\Debug\net7.0\ref\Univali.Api.dll
+C:\Users\marco\OneDrive\Área de Trabalho\Aula-11-exemplo\Univali\src\Univali.Api\bin\Debug\net7.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\marco\OneDrive\Área de Trabalho\Aula-11-exemplo\Univali\src\Univali.Api\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\marco\OneDrive\Área de Trabalho\Aula-11-exemplo\Univali\src\Univali.Api\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\marco\OneDrive\Área de Trabalho\Aula-11-exemplo\Univali\src\Univali.Api\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll
