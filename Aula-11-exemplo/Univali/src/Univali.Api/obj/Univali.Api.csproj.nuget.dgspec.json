@@ -13,8 +13,12 @@
         "packagesPath": "C:\\Users\\marco\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\marco\\OneDrive\\Área de Trabalho\\Aula-11-exemplo\\Univali\\src\\Univali.Api\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Users\\marco\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\marco\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\marco\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\marco\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Univali.Api.Entities;
 using Univali.Api.Models;
 
@@ -61,6 +62,18 @@ public class CustomersController : ControllerBase
     [HttpPost]
     public ActionResult<CustomerDto> CreateCustomer(CustomerForCreationDto customerForCreationDto)
     {
+        if (!ModelState.IsValid)
+        {
+            Response.ContentType = "application/problem+json";
+            //Cria a f[abrica de um objeto de detalhes de problema de validação
+            var problemDetailsFactory = HttpContext.RequestServices.GetRequiredService<ProblemDetailsFactory>();
+            //Cria um objeto de detalhes de problema de validação
+            var validationProblemDetails = problemDetailsFactory.CreateValidationProblemDetails(HttpContext, ModelState);
+            
+            //Atribui o status code 422 no corpo do response
+            validationProblemDetails.Status = StatusCodes.Status422UnprocessableEntity;
+            return UnprocessableEntity(validationProblemDetails);
+        }
         var customerEntity = new Customer()
         {
             Id = Data.Instance.Customers.Max(c => c.Id) + 1,
@@ -87,12 +100,12 @@ public class CustomersController : ControllerBase
     [HttpPut("{id}")]
     public ActionResult UpdateCustomer(int id, CustomerForUpdateDto customerForUpdateDto)
     {
-        if(id != customerForUpdateDto.Id) return BadRequest();
+        if (id != customerForUpdateDto.Id) return BadRequest();
 
         var customerFromDatabase = Data.Instance.Customers
         .FirstOrDefault(customerForUpdateDto => customerForUpdateDto.Id == id);
 
-        if(customerFromDatabase == null) return  NotFound();
+        if (customerFromDatabase == null) return NotFound();
 
         customerFromDatabase.Name = customerForUpdateDto.Name;
         customerFromDatabase.Cpf = customerForUpdateDto.Cpf;
@@ -104,7 +117,7 @@ public class CustomersController : ControllerBase
     public ActionResult DeleteCustomer(int id)
     {
         var customerFromDatabase = Data.Instance.Customers.FirstOrDefault(customer => customer.Id == id);
-        if(customerFromDatabase == null) return NotFound();
+        if (customerFromDatabase == null) return NotFound();
         Data.Instance.Customers.Remove(customerFromDatabase);
 
         return NoContent();
@@ -114,22 +127,46 @@ public class CustomersController : ControllerBase
     public ActionResult PartiallyUpdateCustomer(
         [FromBody] JsonPatchDocument<CustomerForPatchDto> patchDocument,
         [FromRoute] int id)
+    {
+        var customerFromDatabase = Data.Instance.Customers.FirstOrDefault(customer => customer.Id == id);
+
+        if (customerFromDatabase == null) return NotFound();
+
+        var customerToPatch = new CustomerForPatchDto
         {
-            var customerFromDatabase = Data.Instance.Customers.FirstOrDefault(customer => customer.Id == id);
+            Name = customerFromDatabase.Name,
+            Cpf = customerFromDatabase.Cpf
+        };
 
-            if(customerFromDatabase == null) return NotFound();
+        patchDocument.ApplyTo(customerToPatch);
 
-            var customerToPatch = new CustomerForPatchDto
+        customerFromDatabase.Name = customerToPatch.Name;
+        customerFromDatabase.Cpf = customerToPatch.Cpf;
+
+        return NoContent();
+    }
+
+
+    [HttpGet("with-address")]
+    public ActionResult<IEnumerable<CustomerWithAddressesDto>> GetCustomersWithAddresses()
+    {
+        var customersFromDatabase = Data.Instance.Customers;
+
+        var customersToReturn = customersFromDatabase
+        .Select(customer => new CustomerWithAddressesDto
+        {
+            Id = customer.Id,
+            Name = customer.Name,
+            Cpf = customer.Cpf,
+            Addresses = customer.Addresses.Select(address => new AddressDto
             {
-                Name = customerFromDatabase.Name,
-                Cpf = customerFromDatabase.Cpf
-            };
+                Id = address.Id,
+                City = address.City,
+                Street = address.Street
+            }).ToList()
+        });
+        return Ok(customersToReturn);
+    }
 
-            patchDocument.ApplyTo(customerToPatch);
-
-            customerFromDatabase.Name = customerToPatch.Name;
-            customerFromDatabase.Cpf = customerToPatch.Cpf;
-            
-            return NoContent();
-        }
+    
 }

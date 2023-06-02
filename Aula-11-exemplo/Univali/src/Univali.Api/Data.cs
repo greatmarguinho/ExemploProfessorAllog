@@ -20,7 +20,7 @@ namespace Univali.Api
                 Não é instânciada ao executar a aplicação, é instânciada
                 quando necessária e será somente uma única vez.
                  */
-  
+
                 return _instance ??= new Data();
             }
         }
@@ -32,12 +32,36 @@ namespace Univali.Api
            new Customer {
                    Id = 1,
                    Name = "Linus Torvalds",
-                   Cpf = "73473943096"
+                   Cpf = "73473943096",
+                   Addresses = new List<Address>()
+                   {
+                    new Address()
+                    {
+                        Id = 1,
+                        Street = "Verão do Cometa",
+                        City = "Elvira"
+                    },
+                    new Address()
+                    {
+                        Id = 2,
+                        Street = "Borboletas Psicodélicas",
+                        City = "Perobia"
+                    }
+                    }
                },
            new Customer {
                    Id = 2,
                    Name = "Bill Gates",
-                   Cpf = "95395994076"
+                   Cpf = "95395994076",
+                   Addresses = new List<Address>
+                   {
+                    new Address()
+                    {
+                        Id = 3,
+                        Street = "Cancao Excentrica",
+                        City = "Perobia"
+                    }
+                   }
                }
           };
         }
