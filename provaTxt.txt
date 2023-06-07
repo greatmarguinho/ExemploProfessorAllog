@@ -1,0 +1,7 @@
+created at route
+estudar operadores
+statecodes decorar
+expressao lambda
+
+https://www.nuget.org/packages/Npgsql.EntityFrameworkCore.PostgreSQL/#versions-body-tab
+https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Tools/7.0.4
